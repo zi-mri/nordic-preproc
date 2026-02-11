@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nordic-preproc"
+version = "0.1.0"
+description = "Lightweight Python wrapper(s) for the MATLAB NORDIC denoising pipeline"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [{name = "ZI MRI Platform"}]
+dependencies = [
+  "numpy",
+  "nibabel",
+]
+
+[project.scripts]
+nordic-run = "nordic_preproc.cli.run:main"
+nordic-bids = "nordic_preproc.cli.bids_run:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

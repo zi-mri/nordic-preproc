@@ -1,0 +1,34 @@
+name: mri_general
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10.*
+  - nibabel
+  - numpy
+  - pandas
+  - scipy
+  - matplotlib-base
+  - pyyaml
+  - requests
+  - beautifulsoup4
+  - pydicom
+  - ipython
+  - jupyter_client
+  - jupyter_core
+  - jupyter_server
+  - notebook-shim
+  - packaging
+  - contourpy
+  - kiwisolver
+  - fonttools
+  - pillow
+  - pyparsing
+  - python-dateutil
+  - pytz
+  - setuptools
+  - six
+  - typing-extensions
+  - zipp
+  - pip:
+      - flywheel-sdk==19.0.0
+      - pymeshlab==2023.12.post1
