@@ -43,7 +43,18 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv=None) -> None:
     args = build_parser().parse_args(argv)
     bids_root = Path(args.bids_root)
-
+    p.add_argument(
+    "--participant-label",
+    nargs="+",
+    default=None,
+    help="One or more participant labels (e.g., 01 02 or sub-01 sub-02). If omitted, processes all participants.",
+    )
+    p.add_argument(
+        "--session-label",
+        nargs="+",
+        default=None,
+        help="One or more session labels (e.g., 01 or ses-01). If omitted, processes all sessions.",
+    )
     deriv_root = bids_root / "derivatives" / "nordic"
     deriv_root.mkdir(parents=True, exist_ok=True)
     write_dataset_description(deriv_root)
@@ -53,7 +64,14 @@ def main(argv=None) -> None:
     else:
         backend = MCRBackend(mcr_path=args.mcr_path, nordic_mcr_path=args.nordic_mcr_path)
 
-    func_files = list(iter_bids_func_files(bids_root))
+    func_files = list(
+        iter_bids_func_files(
+            bids_root,
+            participant_labels=args.participant_label,
+            session_labels=args.session_label,
+        )
+    )
+
     if not func_files:
         print("No functional files found matching: sub-*/ses-*/func/*_bold.nii.gz")
         return
