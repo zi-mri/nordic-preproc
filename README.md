@@ -2,11 +2,11 @@
 
 Lightweight Python wrappers for the **MATLAB NORDIC** denoising pipeline (`NIFTI_NORDIC.m`).
 
-This repo turns the original scripts into:
+This repo includes:
 - a small installable Python package
 - two command-line tools:
   - `nordic-run` (single magnitude+phase pair)
-  - `nordic-bids` (walk a BIDS dataset and write BIDS-derivatives)
+  - `nordic-bids` (input a BIDS dataset and write BIDS-derivatives)
 
 ## Installation (recommended for your team)
 
@@ -44,7 +44,7 @@ nordic-run mag_bold.nii.gz phase_part-phase_bold.nii.gz \
   --output_dir /tmp/nordic_out
 ```
 
-Outputs (single-run mode) follow the original scripts:
+Outputs follow the original scripts:
 - `functional_data_nordic.nii.gz`
 - and, if noise scans are detected:
   - `functional_data_raw.nii.gz`
@@ -76,4 +76,3 @@ Tune with `--mad_thresh` if needed.
 ## Notes
 
 - This repo **does not** redistribute NORDIC itself; it only wraps your local MATLAB code.
-- If you want CI later, focus tests on the pure-Python helpers (noise detection, splitting, naming).
