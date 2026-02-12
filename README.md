@@ -18,20 +18,82 @@ pip install -e .
 
 > `pip install -e .` makes the commands available and keeps edits immediately usable.
 
-## Backends
+# Installation
 
-You must choose a backend for each command:
+```bash
+conda env create -f env/conda.yml
+conda activate nordic-preproc
+pip install -e .
+```
 
-- **MATLAB engine** (`--matlab`): requires MATLAB + MATLAB Engine API for Python.
-- **MCR** (`--mcr`): requires MATLAB Compiler Runtime + compiled NORDIC runner
-  (expects `run_nifti_nordic_pipeline.sh` in `--nordic_mcr_path`).
+---
 
-### Recommended backend by OS
+# Backend selection
 
-- **macOS / Linux:** use **`--mcr`** (recommended) or `--matlab` if you already have MATLAB.
-- **Windows:** use **WSL** and run the **`--mcr`** backend inside WSL (recommended).
-  - The MCR runner expects a `run_nifti_nordic_pipeline.sh` script, which is Linux/macOS-oriented.
-  - Native Windows support for the MCR runner is not currently provided.
+There are two ways to run NORDIC:
+
+---
+
+## 1️⃣ MATLAB backend (`--matlab`) — recommended for most users
+
+Use this if you already have MATLAB installed.
+
+- Works on **macOS, Linux, and Windows**
+- Does **not** require WSL on Windows
+- Requires installation of the MATLAB Engine API for Python
+
+Example:
+
+```bash
+nordic-run mag.nii.gz phase_part-phase_bold.nii.gz \
+  --matlab --nordic_path /path/to/NORDIC_MATLAB/
+```
+
+### Installing the MATLAB Engine API
+
+Locate your MATLAB installation directory (`MATLABROOT`), then run:
+
+```bash
+cd "<MATLABROOT>/extern/engines/python"
+python -m pip install .
+```
+
+Verify installation:
+
+```bash
+python -c "import matlab.engine; print('MATLAB engine OK')"
+```
+
+---
+
+## 2️⃣ MATLAB Compiler Runtime backend (`--mcr`)
+
+Use this if you do **not** have a MATLAB license.
+
+- Works on **macOS and Linux**
+- On **Windows**, use **WSL** (Windows Subsystem for Linux)
+- Requires:
+  - MATLAB Compiler Runtime (MCR)
+  - Compiled NORDIC distribution containing `run_nifti_nordic_pipeline.sh`
+
+Example:
+
+```bash
+nordic-run mag.nii.gz phase_part-phase_bold.nii.gz \
+  --mcr \
+  --mcr_path /path/to/MCR \
+  --nordic_mcr_path /path/to/compiled_nordic/
+```
+
+---
+
+# Windows users
+
+- If you have MATLAB → use `--matlab` (recommended).
+- If you do not have MATLAB → install WSL and run the `--mcr` backend inside WSL.
+
+Native Windows support for the `.sh` MCR runner is not currently provided.
+
 
 ## Usage
 
