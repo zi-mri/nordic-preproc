@@ -82,12 +82,62 @@ def outputs_exist(paths: DerivativePaths, noise_present: bool) -> bool:
     return all(p.exists() for p in expected)
 
 
-def iter_bids_func_files(bids_root: Path):
-    # Mirrors original: sub-*/ses-*/func/*_bold.nii.gz
-    for m_im in sorted(bids_root.glob("sub-*/ses-*/func/*_bold.nii.gz")):
-        if "part-phase" in m_im.name:
+from typing import Iterable, Optional, Sequence
+
+def _normalize_bids_labels(labels: Optional[Sequence[str]], prefix: str) -> Optional[list[str]]:
+    """Normalize labels so user can pass either '01' or 'sub-01' (or 'ses-01')."""
+    if not labels:
+        return None
+    out = []
+    for lab in labels:
+        lab = lab.strip()
+        if not lab:
             continue
-        yield m_im
+        if lab.startswith(prefix):
+            out.append(lab)
+        else:
+            out.append(f"{prefix}{lab}")
+    return out or None
+
+
+def iter_bids_func_files(
+    bids_root: Path,
+    participant_labels: Optional[Sequence[str]] = None,
+    session_labels: Optional[Sequence[str]] = None,
+) -> Iterable[Path]:
+    """Yield magnitude BOLD files in a BIDS dataset, optionally filtered by sub/ses.
+
+    - Handles datasets with sessions (sub-*/ses-*/func) and without sessions (sub-*/func)
+    - Skips phase files (part-phase) automatically
+    """
+    subs = _normalize_bids_labels(participant_labels, "sub-")
+    sess = _normalize_bids_labels(session_labels, "ses-")
+
+    # Build candidate patterns
+    patterns: list[str] = []
+
+    if subs is None:
+        sub_patterns = ["sub-*"]
+    else:
+        sub_patterns = subs
+
+    # If session labels not provided, include both "with ses" and "no ses" patterns
+    if sess is None:
+        for s in sub_patterns:
+            patterns.append(f"{s}/ses-*/func/*_bold.nii.gz")
+            patterns.append(f"{s}/func/*_bold.nii.gz")
+    else:
+        for s in sub_patterns:
+            for se in sess:
+                patterns.append(f"{s}/{se}/func/*_bold.nii.gz")
+
+    # Yield files
+    for pat in patterns:
+        for m_im in sorted(bids_root.glob(pat)):
+            if "part-phase" in m_im.name:
+                continue
+            yield m_im
+
 
 
 def corresponding_phase_file(magnitude_file: Path) -> Path:
