@@ -8,15 +8,6 @@ This repo includes:
   - `nordic-run` (single magnitude+phase pair)
   - `nordic-bids` (input a BIDS dataset and write BIDS-derivatives)
 
-## Installation
-
-```bash
-conda env create -f env/conda.yml
-conda activate nordic-preproc
-pip install -e .
-```
-
-> `pip install -e .` makes the commands available and keeps edits immediately usable.
 
 # Installation
 
