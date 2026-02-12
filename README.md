@@ -8,7 +8,7 @@ This repo includes:
   - `nordic-run` (single magnitude+phase pair)
   - `nordic-bids` (input a BIDS dataset and write BIDS-derivatives)
 
-## Installation (recommended for your team)
+## Installation
 
 ```bash
 conda env create -f env/conda.yml
