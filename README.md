@@ -26,6 +26,13 @@ You must choose a backend for each command:
 - **MCR** (`--mcr`): requires MATLAB Compiler Runtime + compiled NORDIC runner
   (expects `run_nifti_nordic_pipeline.sh` in `--nordic_mcr_path`).
 
+### Recommended backend by OS
+
+- **macOS / Linux:** use **`--mcr`** (recommended) or `--matlab` if you already have MATLAB.
+- **Windows:** use **WSL** and run the **`--mcr`** backend inside WSL (recommended).
+  - The MCR runner expects a `run_nifti_nordic_pipeline.sh` script, which is Linux/macOS-oriented.
+  - Native Windows support for the MCR runner is not currently provided.
+
 ## Usage
 
 ### Single run
@@ -72,6 +79,26 @@ Noise volumes are detected using low variance across space:
 - volumes with variance < threshold are treated as noise scans (assumed appended at end)
 
 Tune with `--mad_thresh` if needed.
+
+## MATLAB engine (optional)
+
+Most users should use the **MCR** backend. If you prefer `--matlab`, you must install the MATLAB Engine API for Python.
+
+1. Locate your MATLAB installation directory (`MATLABROOT`).
+
+2. Install the engine:
+
+```bash
+cd "<MATLABROOT>/extern/engines/python"
+python -m pip install .
+```
+
+3. Verify:
+
+```bash
+python -c "import matlab.engine; print('MATLAB engine OK')"
+```
+
 
 ## Notes
 
