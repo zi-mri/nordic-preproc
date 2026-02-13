@@ -124,6 +124,10 @@ nordic-bids /path/to/bids_root \
 
 By default, it skips runs where outputs already exist; use `--overwrite` to re-run.
 
+To process a subset (useful for parallelization):
+- `--participant-label 01 02` (or `sub-01 sub-02`)
+- `--session-label 01` (or `ses-01`)
+
 ## Noise scan detection
 
 Noise volumes are detected using low variance across space:
