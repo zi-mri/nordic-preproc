@@ -29,6 +29,10 @@ def build_parser() -> argparse.ArgumentParser:
     backend.add_argument("--matlab", action="store_true", help="Use MATLAB engine backend")
     backend.add_argument("--mcr", action="store_true", help="Use MATLAB Compiler Runtime backend")
 
+    p.add_argument("--participant-label", nargs="+", default=None,
+                   help="One or more participant labels (e.g., 01 02 or sub-01 sub-02). If omitted, processes all participants.")
+    p.add_argument("--session-label", nargs="+", default=None, help="One or more session labels (e.g., 01 or ses-01). If omitted, processes all sessions.")
+    
     p.add_argument("--nordic_path", default="", help="Path to the NORDIC MATLAB scripts (for --matlab)")
     p.add_argument("--mcr_path", default="", help="Path to MATLAB Compiler Runtime directory (for --mcr)")
     p.add_argument("--nordic_mcr_path", default="./nordic_mcr/", help="Path to compiled NORDIC directory (for --mcr)")
@@ -43,18 +47,6 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv=None) -> None:
     args = build_parser().parse_args(argv)
     bids_root = Path(args.bids_root)
-    p.add_argument(
-    "--participant-label",
-    nargs="+",
-    default=None,
-    help="One or more participant labels (e.g., 01 02 or sub-01 sub-02). If omitted, processes all participants.",
-    )
-    p.add_argument(
-        "--session-label",
-        nargs="+",
-        default=None,
-        help="One or more session labels (e.g., 01 or ses-01). If omitted, processes all sessions.",
-    )
     deriv_root = bids_root / "derivatives" / "nordic"
     deriv_root.mkdir(parents=True, exist_ok=True)
     write_dataset_description(deriv_root)
