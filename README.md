@@ -137,26 +137,6 @@ Noise volumes are detected using low variance across space:
 
 Tune with `--mad_thresh` if needed.
 
-## MATLAB engine (optional)
-
-Most users should use the **MCR** backend. If you prefer `--matlab`, you must install the MATLAB Engine API for Python.
-
-1. Locate your MATLAB installation directory (`MATLABROOT`).
-
-2. Install the engine:
-
-```bash
-cd "<MATLABROOT>/extern/engines/python"
-python -m pip install .
-```
-
-3. Verify:
-
-```bash
-python -c "import matlab.engine; print('MATLAB engine OK')"
-```
-
-
 ## Notes
 
 - This repo **does not** redistribute NORDIC itself; it only wraps your local MATLAB code.
